@@ -1,9 +1,11 @@
 import turtle
 import random
+import time
 
 score = 0
 high_score = 0
 scr = None
+delay = 0.025
 
 # Set up screen
 win = turtle.Screen()
@@ -73,8 +75,8 @@ def createGoal():
     return goal
 
 # Set speed variables
-player_speed = 0.01
-obstacle_speed = 0.005
+player_speed = 2
+obstacle_speed = 1
 
 # Define movement functions
 def turnleft():
@@ -103,7 +105,7 @@ turtle.listen()
 
 # Main game loop
 def main_game_loop():
-    global player, obstacles, goal, game_over, player_speed, obstacle_speed  # Make variables global
+    global player, obstacles, goal, game_over, delay, player_speed, obstacle_speed  # Make variables global
     
     # Create game objects
     drawBorder()
@@ -112,7 +114,7 @@ def main_game_loop():
     obstacles = []
     goal = createGoal()
     
-    # Sets game state to NOT game over
+    # Set game state to NOT game over
     game_over = False
     
     # Bind movement functions to player object
@@ -121,14 +123,15 @@ def main_game_loop():
     turtle.onkey(increasespeed, 'Up')
     turtle.onkey(decreasespeed, 'Down')
     
+    # Start the game loop
     while True:
+        
         # Move the player
         player.forward(player_speed)
     
         # Player: Check Boundaries
         if player.xcor() > 290 or player.xcor() <-290 :
             player.right(180)
-    
         if player.ycor() > 290 or player.ycor() <-290 :
             player.right(180)
         
@@ -136,11 +139,9 @@ def main_game_loop():
         for obstacle in obstacles :
             # Move the obstacles
             obstacle.forward(obstacle_speed)
-            
             # Obstacles: Check Boundaries
             if obstacle.xcor() > 290 or obstacle.xcor() <-290 :
                 obstacle.right(180)
-        
             if obstacle.ycor() > 290 or obstacle.ycor() <-290 :
                 obstacle.right(180)
             
@@ -148,17 +149,21 @@ def main_game_loop():
         if isCollision(player,goal):
             goal.goto(random.randint(-290,290),random.randint(-290,290))
             goal.right(random.randint(0,360))
-            obstacles.append(createObstacle())  # Add a new obstacle
-            # Adjust speed
-            player_speed += 0.1
-            obstacle_speed += 0.05
+            # Add a new obstacle
+            obstacles.append(createObstacle())  
+            # Adjust the timing
+            if delay >= 0.001:
+                delay -= 0.001
+            else :
+                player_speed += 0.2
+                obstacle_speed += 0.1
             # Update score
             global score, high_score
-            score += 10
+            score += 100
             if high_score < score:
                 high_score = score
             drawScoreboard()
-            
+       
         # Check collisions with obstacles 
         if any(isCollision(player, obs) for obs in obstacles):
             # Hide game objects
@@ -169,15 +174,18 @@ def main_game_loop():
             # Reset score
             score = 0
             # Game over screen
+            turtle.hideturtle()
             turtle.color("white")
             turtle.goto(0, 0)
-            turtle.write("Game Over", align="center", font=("Courier", 24, "normal"))
-            turtle.hideturtle()
+            turtle.write(" Game Over", align="center", font=("Courier", 24, "normal"))
             game_over = True
             break
+        
+        # Apply the delay
+        time.sleep(delay)
 
 def reset_game():
-    global game_over, player_speed, obstacle_speed
+    global game_over, player_speed, obstacle_speed, delay
     if game_over:
         # Clear everything
         player.clear()
@@ -185,9 +193,11 @@ def reset_game():
             obstacle.clear()
         goal.clear()
         turtle.clear()
-        # Reset Speed
-        player_speed = 0.01
-        obstacle_speed = 0.005
+        # Reset delay
+        delay = 0.025
+        # Reset speed variables
+        player_speed = 2
+        obstacle_speed = 1
         # Recreate game elements and start new game loop
         main_game_loop()
 
