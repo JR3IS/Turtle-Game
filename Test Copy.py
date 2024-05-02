@@ -201,6 +201,7 @@ def reset_game():
         # Recreate game elements and start new game loop
         main_game_loop()
 
+
 # Bind reset function
 game_over = True  # Initialize game_over to True
 turtle.onkey(reset_game, 'r')
