@@ -1,15 +1,16 @@
 import turtle
 import random
 import time
-
 import Menu as menu
 import Test_Copy as game
 
 
-def start_game():
+
+def start():
     print("Start Game")
-    start_game()
-    
+    menu.menu_window.clear()
+    game.start_game()
+
 def show_controls():
     print("Controls")
 
@@ -19,5 +20,8 @@ def show_high_score():
 def quit_game():
     print("Quit Game")
 
-button_functions = [start_game, show_controls, show_high_score, quit_game]
+# Added close_menu function to button_functions
+button_functions = [start, show_controls, show_high_score, quit_game]
 
+menu.create_menu(button_functions)
+turtle.done()

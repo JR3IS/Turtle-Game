@@ -1,11 +1,15 @@
 import turtle
 
+# Global variable to store the menu window
+menu_window = None
+
 def create_menu(button_functions):
-    win = turtle.Screen()
-    win.title("TURTLE")
-    win.bgcolor('darkblue')
-    win.setup(width=1.0, height=1.0)
-    win.tracer(3)
+    global menu_window
+    menu_window = turtle.Screen()
+    menu_window.title("TURTLE")
+    menu_window.bgcolor('darkblue')
+    menu_window.setup(width=1.0, height=1.0)
+    menu_window.tracer(3)
 
     pen = turtle.Turtle()
     pen.speed(0)
@@ -86,12 +90,34 @@ def create_menu(button_functions):
         for index, option_y in enumerate(OPTION_Y_COORDINATES):
             if option_y - OPTION_HEIGHT / 2 < y < option_y + OPTION_HEIGHT / 2 and -150 < x < 150:
                 button_functions[index]()
-                turtle.clearscreen()
+                close_menu()  
                 return
-        print("Click One Of The Options!")
-        print(x, y)
 
     turtle.onscreenclick(btnclick)
     turtle.listen()
-
+    
     turtle.done()
+    
+
+def close_menu():
+    global menu_window
+    if menu_window is not None:
+        menu_window.bye()
+
+#####################################################################
+'''
+def start():
+    print("Start Game")
+    
+def show_controls():
+    print("Controls")
+
+def show_high_score():
+    print("High Score")
+
+def quit_game():
+    print("Quit Game")
+
+button_functions = [start, show_controls, show_high_score, quit_game]
+create_menu(button_functions)
+'''

@@ -214,4 +214,4 @@ def start_game():
     # Keep the window open
     win.mainloop()
     
-start_game()
+#start_game()
