@@ -1,6 +1,7 @@
 import turtle
 import random
 import time
+import Menu as menu
 
 def start_game(): 
     global score,high_score,scr,delay
@@ -179,16 +180,65 @@ def start_game():
                 # Game over screen
                 turtle.hideturtle()
                 turtle.color("white")
-                turtle.goto(0, 0)
-                turtle.write(" Game Over", align="center", font=("Courier", 24, "normal"))
+                turtle.penup()
+                turtle.goto(1, 80)
+                turtle.write("Game Over", align="center", font=("Courier", 45, "normal"))
+                draw_buttons()
+                turtle.onscreenclick(check_button_click)
+
                 game_over = True
                 break
             
             # Apply the delay
             time.sleep(delay)
 
+    # Draw Game Over menu buttons
+    def draw_buttons():
+        # Menu Options
+        OPTIONS = ["Restart", "Menu"]
+        OPTION_Y_COORDINATES = [0, -100]
+        OPTION_HEIGHT = 70
+
+        global pen
+        pen = turtle.Turtle()
+        pen.speed(0)
+        pen.penup()
+
+        def write_text(text, y):
+            pen.penup()
+            pen.goto(-110, y - 15)  # Adjusted position
+            pen.color('white')  # Change color to white
+            pen.write(text, font=("Courier", 20, "normal"))
+
+        def draw_button(y):
+            pen.penup()
+            pen.goto(-145, y + OPTION_HEIGHT / 2)
+            pen.pendown()
+            pen.color('white')
+            pen.setheading(0)
+            pen.forward(300)
+            pen.right(90)
+            pen.forward(OPTION_HEIGHT)
+            pen.right(90)
+            pen.forward(300)
+            pen.right(90)
+            pen.forward(OPTION_HEIGHT)
+            pen.right(90)
+            pen.hideturtle()
+
+        for text, y in zip(OPTIONS, OPTION_Y_COORDINATES):
+            draw_button(y)
+            write_text(text, y)
+
+    def check_button_click(x, y):
+        if -150 <= x <= 150 and -35 <= y <= 35:
+            reset_game()
+        elif -150 <= x <= 150 and -155 <= y <= -65:
+            menu.close_menu()
+    
+    # Function too reset the game
     def reset_game():
-        global game_over, player_speed, obstacle_speed, delay
+        global game_over, player_speed, obstacle_speed, delay, pen
         if game_over:
             # Clear everything
             player.clear()
@@ -196,6 +246,7 @@ def start_game():
                 obstacle.clear()
             goal.clear()
             turtle.clear()
+            pen.clear()
             # Reset delay
             delay = 0.025
             # Reset speed variables
@@ -203,8 +254,9 @@ def start_game():
             obstacle_speed = 1
             # Recreate game elements and start new game loop
             main_game_loop()
-
+    
     # Bind reset function
+    global game_over
     game_over = True  # Initialize game_over to True
     turtle.onkey(reset_game, 'r')
 
@@ -214,4 +266,4 @@ def start_game():
     # Keep the window open
     win.mainloop()
     
-#start_game()
+start_game()
