@@ -4,8 +4,6 @@ import time
 import Menu as menu
 import Test_Copy as game
 
-
-
 def start():
     print("Start Game")
     menu.menu_window.clear()
