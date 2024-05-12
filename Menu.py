@@ -55,7 +55,7 @@ def create_menu(button_functions):
     draw_title()
 
     # Menu Options
-    OPTIONS = ["Start Game", "Controls", "High Score", "Quit Game"]
+    OPTIONS = ["Start Game", "Controls", "Leaderboard", "Quit Game"]
     OPTION_Y_COORDINATES = [110, 20, -70, -160]
     OPTION_HEIGHT = 70
 

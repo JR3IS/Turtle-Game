@@ -1,14 +1,17 @@
 import turtle
 import random
 import time
-import Menu as menu
+import Leaderboard as lb
 
-def start_game(): 
+def start_game(callback): 
     global score,high_score,scr,delay
     score = 0
-    high_score = 0
+    high_score = lb.get_highest_score()
     scr = None
     delay = 0.025
+
+    # Load leaderboard
+    lb.load_leaderboard()
 
     # Set up screen
     win = turtle.Screen()
@@ -16,20 +19,21 @@ def start_game():
     win.bgcolor('darkblue')
     win.setup(width=1.0,height=1.0)
     win.tracer(3)
-
+    
     # Draw border
     def drawBorder():
-        mypen = turtle.Turtle()
-        mypen.penup()
-        mypen.setpos(-290,-290)
-        mypen.color('white')
-        mypen.hideturtle()
-        mypen.pendown()
-        mypen.pensize(3)
+        global border
+        border = turtle.Turtle()
+        border.penup()
+        border.setpos(-290,-290)
+        border.color('white')
+        border.hideturtle()
+        border.pendown()
+        border.pensize(3)
         for side in range(4) :
-            mypen.forward(600)
-            mypen.left(90)
-        mypen.hideturtle()
+            border.forward(600)
+            border.left(90)
+        border.hideturtle()
 
     # Draw scoreboard 
     def drawScoreboard():
@@ -122,6 +126,7 @@ def start_game():
         game_over = False
         
         # Bind movement functions to player object
+        turtle.listen()
         turtle.onkey(turnleft, 'Left')
         turtle.onkey(turnright, 'Right')
         turtle.onkey(increasespeed, 'Up')
@@ -175,17 +180,17 @@ def start_game():
                 goal.hideturtle()
                 for obs in obstacles:
                         obs.hideturtle()
-                # Reset score
-                score = 0
                 # Game over screen
                 turtle.hideturtle()
                 turtle.color("white")
                 turtle.penup()
                 turtle.goto(1, 80)
-                turtle.write("Game Over", align="center", font=("Courier", 45, "normal"))
+                turtle.write("Game Over", align="center", font=("Courier", 40, "bold"))
                 draw_buttons()
                 turtle.onscreenclick(check_button_click)
-
+                lb.check_high_score(score)
+                # Reset score
+                score = 0
                 game_over = True
                 break
             
@@ -194,11 +199,11 @@ def start_game():
 
     # Draw Game Over menu buttons
     def draw_buttons():
-        # Menu Options
+        # Define Menu Options and Coordinates
         OPTIONS = ["Restart", "Menu"]
         OPTION_Y_COORDINATES = [0, -100]
         OPTION_HEIGHT = 70
-
+        # Draw Buttons
         global pen
         pen = turtle.Turtle()
         pen.speed(0)
@@ -229,14 +234,20 @@ def start_game():
         for text, y in zip(OPTIONS, OPTION_Y_COORDINATES):
             draw_button(y)
             write_text(text, y)
-
+    
+    # Bind buttons to click coordinates 
     def check_button_click(x, y):
+        # If reset is selected
         if -150 <= x <= 150 and -35 <= y <= 35:
             reset_game()
-        elif -150 <= x <= 150 and -155 <= y <= -65:
-            menu.close_menu()
-    
-    # Function too reset the game
+        # If menu is selected
+        elif -150 <= x <= 150 and -135 <= y <= -65:
+            # Clear everything
+            win.clear()
+            # Exit to Menu
+            callback()
+        
+    # Function to reset the game
     def reset_game():
         global game_over, player_speed, obstacle_speed, delay, pen
         if game_over:
@@ -266,4 +277,4 @@ def start_game():
     # Keep the window open
     win.mainloop()
     
-start_game()
+#start_game()
