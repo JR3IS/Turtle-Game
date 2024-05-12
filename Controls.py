@@ -1,12 +1,5 @@
 import os
 import turtle 
-import pygame
-
-# Initialize pygame mixer
-pygame.mixer.init()
-# Load sound effects
-click_sound = pygame.mixer.Sound("Sounds\click.wav")
-
 
 def display_controls(callback):
     # Set up screen
