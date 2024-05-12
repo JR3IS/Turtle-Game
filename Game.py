@@ -108,8 +108,6 @@ def start_game(callback):
         else : 
             return False
         
-    
-
     # Main game loop
     def main_game_loop():
         global player, obstacles, goal, game_over, delay, player_speed, obstacle_speed  # Make variables global

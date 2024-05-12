@@ -2,6 +2,8 @@ import turtle
 import Menu as menu
 import Game as game
 import Leaderboard as lb
+import Controls as ctrl
+import sys
 
 def start():
     print("Start Game")
@@ -10,6 +12,8 @@ def start():
 
 def show_controls():
     print("Controls")
+    menu.menu_window.clear()
+    ctrl.display_controls(exit_to_menu)
 
 def show_leaderboard():
     print("Leaderboard")
@@ -18,6 +22,7 @@ def show_leaderboard():
 
 def quit_game():
     print("Quit Game")
+    sys.exit()
     
 def exit_to_menu():
     print("Exit to Menu")

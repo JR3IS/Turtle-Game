@@ -4,7 +4,9 @@ import turtle
 def load_leaderboard():
     leaderboard = []
     try:
+        # Open file in read mode
         with open('leaderboard.txt', 'r') as file:
+            # Add file info to leaderboard list
             for line in file:
                 name, score = line.strip().split(',')
                 leaderboard.append((name, int(score)))
@@ -85,7 +87,7 @@ def display_leaderboard(callback):
     pen.speed(0)
     pen.color('white')
     pen.penup()
-    pen.goto(-145, -150)  # Adjusted position
+    pen.goto(-145, -150)  
     pen.pendown()
     pen.setheading(0)
     pen.forward(300)
@@ -98,7 +100,7 @@ def display_leaderboard(callback):
     pen.hideturtle()
     
     # Write button text
-    pen.goto(0, -200)  # Adjusted position
+    pen.goto(0, -200)  
     pen.write("Menu", font=("Courier", 20, "normal"), align="center")
     
     # Making button clickable
