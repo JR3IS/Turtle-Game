@@ -108,8 +108,7 @@ def start_game(callback):
         else : 
             return False
         
-    # Set keyboard bindings 
-    turtle.listen()
+    
 
     # Main game loop
     def main_game_loop():
@@ -277,4 +276,3 @@ def start_game(callback):
     # Keep the window open
     win.mainloop()
     
-#start_game()
