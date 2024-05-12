@@ -1,6 +1,7 @@
 import turtle
 import random
 import time
+import pygame
 import Leaderboard as lb
 
 def start_game(callback): 
@@ -10,6 +11,14 @@ def start_game(callback):
     scr = None
     delay = 0.025
 
+    # Initialize pygame mixer
+    pygame.mixer.init()
+    # Load sound effects
+    border_sound = pygame.mixer.Sound(r"Sounds\border.wav")
+    goal_sound = pygame.mixer.Sound("Sounds\goal.wav")
+    obstacle_sound = pygame.mixer.Sound("Sounds\obstacle.wav")
+    click_sound = pygame.mixer.Sound("Sounds\click.wav")
+    
     # Load leaderboard
     lb.load_leaderboard()
 
@@ -138,8 +147,12 @@ def start_game(callback):
             # Player: Check Boundaries
             if player.xcor() > 290 or player.xcor() <-290 :
                 player.right(180)
+                # Play Sound
+                border_sound.play()
             if player.ycor() > 290 or player.ycor() <-290 :
                 player.right(180)
+                # Play Sound
+                border_sound.play()
             
             # Obstacles Setup
             for obstacle in obstacles :
@@ -155,6 +168,8 @@ def start_game(callback):
             if isCollision(player,goal):
                 goal.goto(random.randint(-290,290),random.randint(-290,290))
                 goal.right(random.randint(0,360))
+                # Play sound
+                goal_sound.play()
                 # Add a new obstacle
                 obstacles.append(createObstacle())  
                 # Adjust the timing
@@ -172,6 +187,8 @@ def start_game(callback):
         
             # Check collisions with obstacles 
             if any(isCollision(player, obs) for obs in obstacles):
+                # Play Sound
+                obstacle_sound.play()
                 # Hide game objects
                 player.hideturtle()
                 goal.hideturtle()
@@ -236,6 +253,9 @@ def start_game(callback):
     def check_button_click(x, y):
         # If reset is selected
         if -150 <= x <= 150 and -35 <= y <= 35:
+            # Play Sound
+            click_sound.play()
+            # Reset Game
             reset_game()
         # If menu is selected
         elif -150 <= x <= 150 and -135 <= y <= -65:

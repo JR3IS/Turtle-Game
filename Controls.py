@@ -1,5 +1,12 @@
 import os
 import turtle 
+import pygame
+
+# Initialize pygame mixer
+pygame.mixer.init()
+# Load sound effects
+click_sound = pygame.mixer.Sound("Sounds\click.wav")
+
 
 def display_controls(callback):
     # Set up screen
@@ -28,8 +35,6 @@ def display_controls(callback):
     # Get the directory of the current script
     script_dir = os.path.dirname(os.path.realpath(__file__))
     icons_dir = os.path.join(script_dir, "Icons")
-    print(f"ICONS PATH {icons_dir}")
-    help
     
     # Register PNG images as shapes
     win.register_shape(os.path.join(icons_dir, "LR.gif"))

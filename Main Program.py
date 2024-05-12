@@ -4,28 +4,39 @@ import Game as game
 import Leaderboard as lb
 import Controls as ctrl
 import sys
+import pygame
+
+# Initialize pygame mixer
+pygame.mixer.init()
+# Load sound effects
+click_sound = pygame.mixer.Sound("Sounds\click.wav")
 
 def start():
     print("Start Game")
+    click_sound.play()
     menu.menu_window.clear()
     game.start_game(exit_to_menu)
 
 def show_controls():
     print("Controls")
+    click_sound.play()
     menu.menu_window.clear()
     ctrl.display_controls(exit_to_menu)
 
 def show_leaderboard():
     print("Leaderboard")
+    click_sound.play()
     menu.menu_window.clear()
     lb.display_leaderboard(exit_to_menu)
 
 def quit_game():
     print("Quit Game")
+    click_sound.play()
     sys.exit()
     
 def exit_to_menu():
     print("Exit to Menu")
+    click_sound.play()
     menu.create_menu(button_functions)
 
 # Added close_menu function to button_functions
