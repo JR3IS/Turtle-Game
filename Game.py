@@ -5,7 +5,8 @@ import pygame
 import Leaderboard as lb
 
 def start_game(callback): 
-    global score,high_score,scr,delay
+    global score,high_score,scr,delay,game_over
+    game_over = True
     score = 0
     high_score = lb.get_highest_score()
     scr = None
@@ -14,10 +15,13 @@ def start_game(callback):
     # Initialize pygame mixer
     pygame.mixer.init()
     # Load sound effects
-    border_sound = pygame.mixer.Sound(r"Sounds\border.wav")
+    border_sound = pygame.mixer.Sound(r"Sounds\bump.ogg")
     goal_sound = pygame.mixer.Sound("Sounds\goal.wav")
-    obstacle_sound = pygame.mixer.Sound("Sounds\obstacle.wav")
-    click_sound = pygame.mixer.Sound("Sounds\click.wav")
+    obstacle_sound = pygame.mixer.Sound("Sounds\obstacle.ogg")
+    start_game = pygame.mixer.Sound("Sounds\start_game.ogg")
+    turn_sound = pygame.mixer.Sound(r"Sounds\turn.wav")
+    more_speed_sound = pygame.mixer.Sound("Sounds\change_speed.ogg")
+    less_speed_sound = pygame.mixer.Sound("Sounds\less_speed.ogg")
     
     # Load leaderboard
     lb.load_leaderboard()
@@ -98,17 +102,25 @@ def start_game(callback):
     # Define movement functions
     def turnleft():
         player.left(30)
-
+        if not game_over:
+            turn_sound.play()
+    
     def turnright():
         player.right(30)
+        if not game_over:
+            turn_sound.play()
 
     def increasespeed():
         global player_speed
         player_speed += 1
+        if not game_over:
+            more_speed_sound.play()
 
     def decreasespeed(): 
         global player_speed
         player_speed -= 1
+        if not game_over:
+            less_speed_sound.play()
 
     # Check collision
     def isCollision(t1,t2):
@@ -187,8 +199,6 @@ def start_game(callback):
         
             # Check collisions with obstacles 
             if any(isCollision(player, obs) for obs in obstacles):
-                # Play Sound
-                obstacle_sound.play()
                 # Hide game objects
                 player.hideturtle()
                 goal.hideturtle()
@@ -203,6 +213,11 @@ def start_game(callback):
                 draw_buttons()
                 turtle.onscreenclick(check_button_click)
                 lb.check_high_score(score)
+                # Play Sound
+                if lb.check_high_score == True:
+                    continue
+                else:
+                    obstacle_sound.play()
                 # Reset score
                 score = 0
                 game_over = True
@@ -254,7 +269,7 @@ def start_game(callback):
         # If reset is selected
         if -150 <= x <= 150 and -35 <= y <= 35:
             # Play Sound
-            click_sound.play()
+            start_game.play()
             # Reset Game
             reset_game()
         # If menu is selected
@@ -284,7 +299,6 @@ def start_game(callback):
             main_game_loop()
     
     # Bind reset function
-    global game_over
     game_over = True  # Initialize game_over to True
     turtle.onkey(reset_game, 'r')
 

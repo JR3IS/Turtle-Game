@@ -1,4 +1,10 @@
 import turtle
+import pygame
+
+# Initialize pygame mixer
+pygame.mixer.init()
+# Load Sound Fx
+high_score_sound = pygame.mixer.Sound("Sounds\high_score.ogg")
 
 # Load Leaderboard
 def load_leaderboard():
@@ -28,11 +34,15 @@ def get_highest_score():
 def check_high_score(score):
         leaderboard_data = load_leaderboard()
         if len(leaderboard_data) < 10 or score > leaderboard_data[-1][1]:
+            # Play Sound
+            high_score_sound.play()
             # Display high score message
             high_score_message = "Insert your name : "
             name = turtle.textinput("New High Score!",high_score_message)
             update_leaderboard(name, score)
-
+            # Return True to indicate that there is a new high score
+            return True
+            
 # Update Leaderboard
 def update_leaderboard(name, score):
     leaderboard = load_leaderboard()

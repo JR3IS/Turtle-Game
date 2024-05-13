@@ -1,10 +1,10 @@
-TheFuckinBoss,2600
-Ai Ui,2600
-High Level Shit,2600
-Antonio,2300
-Kraker,2000
-CrackAddict,1900
-Joaquim,1800
-Alpha,1800
-Beta,1800
-Chump,1800
+CPU,1500
+CPU,1000
+CPU,900
+CPU,800
+CPU,700
+CPU,600
+CPU,500
+CPU,400
+CPU,300
+CPU,200
