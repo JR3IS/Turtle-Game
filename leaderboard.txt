@@ -4,7 +4,7 @@ Antonio,2300
 Kraker,2000
 CrackAddict,1900
 Joaquim,1800
+Alpha,1800
+Beta,1800
 Ganzarreia,1700
 Super Fast,1600
-AAAAAAA,1600
-YES,1600

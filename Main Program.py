@@ -8,8 +8,12 @@ import pygame
 
 # Initialize pygame mixer
 pygame.mixer.init()
+# Load BG music
+pygame.mixer.music.load(r"Sounds\bg_music.mp3")
 # Load sound effects
 click_sound = pygame.mixer.Sound("Sounds\click.wav")
+# Play background music in a loop (-1 means loop indefinitely)
+pygame.mixer.music.play(-1)
 
 def start():
     print("Start Game")
