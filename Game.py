@@ -29,7 +29,7 @@ def start_game(callback):
     # Set up screen
     win = turtle.Screen()
     win.title("TURTLE")
-    win.bgcolor('darkblue')
+    win.bgcolor('#1B1A55')
     win.setup(width=1.0,height=1.0)
     win.tracer(3)
     
@@ -131,7 +131,7 @@ def start_game(callback):
         
     # Main game loop
     def main_game_loop():
-        global player, obstacles, goal, game_over, delay, player_speed, obstacle_speed  # Make variables global
+        global player, obstacles, goal, game_over, delay, player_speed, obstacle_speed
         
         # Create game objects
         drawBorder()
@@ -143,7 +143,7 @@ def start_game(callback):
         # Set game state to NOT game over
         game_over = False
         
-        # Bind movement functions to player object
+        # Create keyboard mappings
         turtle.listen()
         turtle.onkey(turnleft, 'Left')
         turtle.onkey(turnright, 'Right')
@@ -178,6 +178,7 @@ def start_game(callback):
                 
             # Check collision with goal
             if isCollision(player,goal):
+                # Move new goal to a random place
                 goal.goto(random.randint(-290,290),random.randint(-290,290))
                 goal.right(random.randint(0,360))
                 # Play sound
@@ -220,6 +221,7 @@ def start_game(callback):
                     obstacle_sound.play()
                 # Reset score
                 score = 0
+                # Set Game Over state to True and break the loop
                 game_over = True
                 break
             

@@ -1,15 +1,28 @@
 import turtle
 import random
 import time
+import pygame
 import Leaderboard as lb
 
 def start_game(callback): 
-    global score,high_score,scr,delay
+    global score,high_score,scr,delay,game_over
+    game_over = True
     score = 0
     high_score = lb.get_highest_score()
     scr = None
     delay = 0.025
 
+    # Initialize pygame mixer
+    pygame.mixer.init()
+    # Load sound effects
+    border_sound = pygame.mixer.Sound(r"Sounds\bump.ogg")
+    goal_sound = pygame.mixer.Sound("Sounds\goal.wav")
+    obstacle_sound = pygame.mixer.Sound("Sounds\obstacle.ogg")
+    start_game = pygame.mixer.Sound("Sounds\start_game.ogg")
+    turn_sound = pygame.mixer.Sound(r"Sounds\turn.wav")
+    more_speed_sound = pygame.mixer.Sound("Sounds\change_speed.ogg")
+    less_speed_sound = pygame.mixer.Sound("Sounds\less_speed.ogg")
+    
     # Load leaderboard
     lb.load_leaderboard()
 
@@ -89,17 +102,25 @@ def start_game(callback):
     # Define movement functions
     def turnleft():
         player.left(30)
-
+        if not game_over:
+            turn_sound.play()
+    
     def turnright():
         player.right(30)
+        if not game_over:
+            turn_sound.play()
 
     def increasespeed():
         global player_speed
         player_speed += 1
+        if not game_over:
+            more_speed_sound.play()
 
     def decreasespeed(): 
         global player_speed
         player_speed -= 1
+        if not game_over:
+            less_speed_sound.play()
 
     # Check collision
     def isCollision(t1,t2):
@@ -108,9 +129,6 @@ def start_game(callback):
         else : 
             return False
         
-    # Set keyboard bindings 
-    turtle.listen()
-
     # Main game loop
     def main_game_loop():
         global player, obstacles, goal, game_over, delay, player_speed, obstacle_speed  # Make variables global
@@ -141,8 +159,12 @@ def start_game(callback):
             # Player: Check Boundaries
             if player.xcor() > 290 or player.xcor() <-290 :
                 player.right(180)
+                # Play Sound
+                border_sound.play()
             if player.ycor() > 290 or player.ycor() <-290 :
                 player.right(180)
+                # Play Sound
+                border_sound.play()
             
             # Obstacles Setup
             for obstacle in obstacles :
@@ -158,6 +180,8 @@ def start_game(callback):
             if isCollision(player,goal):
                 goal.goto(random.randint(-290,290),random.randint(-290,290))
                 goal.right(random.randint(0,360))
+                # Play sound
+                goal_sound.play()
                 # Add a new obstacle
                 obstacles.append(createObstacle())  
                 # Adjust the timing
@@ -189,6 +213,11 @@ def start_game(callback):
                 draw_buttons()
                 turtle.onscreenclick(check_button_click)
                 lb.check_high_score(score)
+                # Play Sound
+                if lb.check_high_score == True:
+                    continue
+                else:
+                    obstacle_sound.play()
                 # Reset score
                 score = 0
                 game_over = True
@@ -239,6 +268,9 @@ def start_game(callback):
     def check_button_click(x, y):
         # If reset is selected
         if -150 <= x <= 150 and -35 <= y <= 35:
+            # Play Sound
+            start_game.play()
+            # Reset Game
             reset_game()
         # If menu is selected
         elif -150 <= x <= 150 and -135 <= y <= -65:
@@ -267,7 +299,6 @@ def start_game(callback):
             main_game_loop()
     
     # Bind reset function
-    global game_over
     game_over = True  # Initialize game_over to True
     turtle.onkey(reset_game, 'r')
 
@@ -277,4 +308,3 @@ def start_game(callback):
     # Keep the window open
     win.mainloop()
     
-#start_game()

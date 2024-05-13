@@ -5,14 +5,13 @@ menu_window = None
 
 def create_menu(button_functions):
     global menu_window
+    
+    # Set up screen
     menu_window = turtle.Screen()
     menu_window.title("TURTLE")
-    menu_window.bgcolor('darkblue')
+    menu_window.bgcolor('#1B1A55')
     menu_window.setup(width=1.0, height=1.0)
     menu_window.tracer(3)
-
-    pen = turtle.Turtle()
-    pen.speed(0)
 
     # Draw border
     def drawBorder():
@@ -30,6 +29,7 @@ def create_menu(button_functions):
 
     drawBorder()
 
+    # Draw title
     def draw_title():
         title_pen = turtle.Turtle()
         title_pen.penup()
@@ -42,6 +42,7 @@ def create_menu(button_functions):
         draw_green_turtle(-150, 230)
         draw_green_turtle(150, 230)
 
+    # Function to draw the green turtles
     def draw_green_turtle(x, y):
         turtle_pen = turtle.Turtle()
         turtle_pen.shapesize(1.5)
@@ -58,13 +59,19 @@ def create_menu(button_functions):
     OPTIONS = ["Start Game", "Controls", "Leaderboard", "Quit Game"]
     OPTION_Y_COORDINATES = [110, 20, -70, -160]
     OPTION_HEIGHT = 70
+    
+    # Create Pen
+    pen = turtle.Turtle()
+    pen.speed(0)
 
+    # Write Text
     def write_text(text, y):
         pen.penup()
         pen.goto(-110, y - 15)  # Adjusted position
         pen.color('white')  # Change color to white
         pen.write(text, font=("courier", 20, "normal"))
 
+    # Draw Buttons
     def draw_button(y):
         pen.penup()
         pen.goto(-145, y + OPTION_HEIGHT / 2)
@@ -98,26 +105,9 @@ def create_menu(button_functions):
     
     turtle.done()
     
-
+# Close Menu
 def close_menu():
     global menu_window
     if menu_window is not None:
         menu_window.bye()
 
-#####################################################################
-'''
-def start():
-    print("Start Game")
-    
-def show_controls():
-    print("Controls")
-
-def show_high_score():
-    print("High Score")
-
-def quit_game():
-    print("Quit Game")
-
-button_functions = [start, show_controls, show_high_score, quit_game]
-create_menu(button_functions)
-'''

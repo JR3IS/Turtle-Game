@@ -5,7 +5,7 @@ def display_controls(callback):
     # Set up screen
     win = turtle.Screen()
     win.title("TURTLE")
-    win.bgcolor('darkblue')
+    win.bgcolor('#1B1A55')
     win.setup(width=1.0,height=1.0)
     win.tracer(3)
     
