@@ -79,7 +79,11 @@ def start_game(callback):
         obstacle.shape('turtle')
         obstacle.penup()
         obstacle.speed(0)
-        obstacle.setpos(random.randint(-290,290),random.randint(-290,290))
+        # Generate obstacle at random position while preventing that it spawns too close to the player
+        while True:
+            obstacle.setpos(random.randint(-290, 290), random.randint(-290, 290))
+            if player.distance(obstacle) > 80:  
+                break
         obstacle.right(random.randint(0,360))
         return obstacle
 
